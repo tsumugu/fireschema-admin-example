@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function __validator_meta__(data) {
+      return (
+        (request.method == "create" && data._createdAt == request.time && data._updatedAt == request.time)
+          || (request.method == "update" && data._createdAt == resource.data._createdAt && data._updatedAt == request.time)
+      );
+    }
+
+    function __validator_keys__(data, keys) {
+      return data.keys().removeAll(['_createdAt', '_updatedAt']).hasOnly(keys);
+    }
+
+    function requestUserIs(uid) {
+      return request.auth.uid == uid;
+    }
+
+    match /users/{userID} {
+      function __validator_0__(data) {
+        return (__validator_meta__(data) && (
+          __validator_keys__(data, ['name', 'age', 'mailaddress', 'createdAt'])
+            && data.name is string
+            && (data.age is number && data.age >= 13)
+            && data.mailaddress is string
+            && data.createdAt is timestamp
+        ));
+      }
+
+      allow read: if true;
+      allow create: if (requestUserIs(userID) && __validator_0__(request.resource.data));
+      allow update: if (requestUserIs(userID) && __validator_0__(request.resource.data));
+      allow delete: if requestUserIs(userID);
+    }
+  }
+}

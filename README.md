@@ -12,10 +12,18 @@ npm ci --legacy-peer-deps
 const serviceAccount = require("path/to/serviceAccountKey.json");
 ```
 
-## 3. 実行
+## 3. Firestore 読み書き
 
 ```
 npx ts-node src/index.ts
 ```
 
 うまくいけばコンソールに読み取り結果が出力されます。
+
+## 4. セキュリティルールの生成
+
+```
+npx fireschema rules src/fireschema/firestoreModel.ts
+```
+
+うまくいけばルートに ```firestore.rules``` が生成されます。
