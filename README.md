@@ -2,7 +2,7 @@
 ## 1. パッケージのインストール
 
 ```
-npm ci
+npm ci --legacy-peer-deps
 ```
 
 ## 2. キーの設定
