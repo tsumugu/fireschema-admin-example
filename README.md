@@ -1,4 +1,4 @@
-# Fireschema を Firebase Admin SDK から呼び出すサンプル
+# Fireschema + Firebase Admin SDK で読み書きをするサンプル
 ## 1. パッケージのインストール
 
 ```
